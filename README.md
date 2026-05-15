@@ -18,7 +18,7 @@ Sistema Escolar desenvolvido em Python com foco em lógica de programação, est
 * Python 3
 * Git
 * GitHub
-* VS Code / PyCharm /
+* VS Code / PyCharm / Colab
 
 ##  Objetivo do projeto
 
