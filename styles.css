@@ -1,0 +1,156 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#0f172a;
+    min-height:100vh;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:1000px;
+    margin:auto;
+}
+
+.titulo{
+    text-align:center;
+    color:white;
+    margin-bottom:30px;
+    font-size:2.5rem;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0px 4px 12px rgba(0,0,0,0.2);
+}
+
+.card h2{
+    margin-bottom:20px;
+    color:#1e293b;
+}
+
+.input{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+    transition:0.3s;
+}
+
+.input:focus{
+    border-color:#2563eb;
+    box-shadow:0px 0px 5px rgba(37,99,235,0.4);
+}
+
+.botao{
+    width:100%;
+    padding:14px;
+    margin-top:18px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.botao:hover{
+    background:#1d4ed8;
+}
+
+.lista{
+    margin-top:30px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:20px;
+}
+
+.aluno-card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0px 2px 8px rgba(0,0,0,0.2);
+    transition:0.3s;
+}
+
+.aluno-card:hover{
+    transform:translateY(-5px);
+}
+
+.aluno-card h3{
+    color:#2563eb;
+    margin-bottom:10px;
+}
+
+.aluno-card p{
+    margin-top:6px;
+    color:#334155;
+}
+
+.mensagem{
+    margin-top:15px;
+    color:green;
+    font-weight:bold;
+}
+
+/* RESPONSIVIDADE */
+
+@media(max-width:768px){
+
+    .titulo{
+        font-size:2rem;
+    }
+
+    .card{
+        padding:20px;
+    }
+
+    .input{
+        padding:12px;
+    }
+
+    .botao{
+        padding:12px;
+    }
+}
+
+@media(max-width:480px){
+
+    body{
+        padding:10px;
+    }
+
+    .titulo{
+        font-size:1.6rem;
+    }
+
+    .card{
+        padding:15px;
+        border-radius:12px;
+    }
+
+    .input{
+        font-size:14px;
+    }
+
+    .botao{
+        font-size:14px;
+    }
+
+    .lista{
+        grid-template-columns:1fr;
+    }
+}
