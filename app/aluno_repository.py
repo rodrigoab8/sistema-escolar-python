@@ -95,3 +95,49 @@ def buscar_aluno_por_matricula(matricula):
     conexao.close()
 
     return aluno
+
+def excluir_aluno(matricula):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    sql = """
+    DELETE FROM alunos
+    WHERE matricula = %s
+    """
+
+    cursor.execute(sql, (matricula,))
+
+    conexao.commit()
+
+    aluno_excluido = cursor.rowcount > 0
+
+    cursor.close()
+    conexao.close()
+
+    return aluno_excluido
+
+def atualizar_aluno(matricula, nome, nota1, nota2, status):
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    sql = """
+    UPDATE alunos
+    SET nome = %s,
+        nota1 = %s,
+        nota2 = %s,
+        status_aluno = %s
+    WHERE matricula = %s
+    """
+
+    valores = (nome, nota1, nota2, status, matricula)
+
+    cursor.execute(sql, valores)
+
+    conexao.commit()
+
+    aluno_atualizado = cursor.rowcount > 0
+
+    cursor.close()
+    conexao.close()
+
+    return aluno_atualizado

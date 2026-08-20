@@ -3,7 +3,9 @@ from aluno_repository import (
     inserir_aluno,
     buscar_todos_alunos,
     buscar_aluno_por_nome,
-    buscar_aluno_por_matricula
+    buscar_aluno_por_matricula,
+    excluir_aluno,
+    atualizar_aluno
 )
 
 
@@ -191,6 +193,189 @@ def buscar_por_matricula():
 
 
 # =========================================
+# EDITAR ALUNO
+# =========================================
+
+def editar_aluno():
+
+    limpar_tela()
+    cabecalho("EDITAR ALUNO")
+
+    print("Para editar um aluno, será necessário informar a matrícula.")
+    print("Caso não saiba a matrícula, utilize primeiro a busca por nome.")
+
+    linha()
+
+    matricula = input("Digite a matrícula do aluno: ").strip()
+
+    if not matricula:
+        print("\nErro: a matrícula não pode ficar vazia.")
+        input("\nPressione ENTER para continuar...")
+        return
+
+    aluno = buscar_aluno_por_matricula(matricula)
+
+    if aluno is None:
+        print("\nNenhum aluno encontrado com essa matrícula.")
+        input("\nPressione ENTER para continuar...")
+        return
+
+    print("\nAluno encontrado:")
+    linha()
+    print("Matrícula : {}".format(aluno[1]))
+    print("Nome      : {}".format(aluno[2]))
+    print("Nota 1    : {}".format(aluno[3]))
+    print("Nota 2    : {}".format(aluno[4]))
+    print("Status    : {}".format(aluno[5]))
+    linha()
+
+    print("\nDigite os novos dados.")
+    print("Pressione ENTER para manter o valor atual.")
+
+    novo_nome = input(
+        "\nNome [{}]: ".format(aluno[2])
+    ).strip()
+
+    if not novo_nome:
+        novo_nome = aluno[2]
+
+    entrada_nota1 = input(
+        "Nota 1 [{}]: ".format(aluno[3])
+    ).strip()
+
+    entrada_nota2 = input(
+        "Nota 2 [{}]: ".format(aluno[4])
+    ).strip()
+
+    try:
+
+        if entrada_nota1:
+            nova_nota1 = float(entrada_nota1)
+        else:
+            nova_nota1 = float(aluno[3])
+
+        if entrada_nota2:
+            nova_nota2 = float(entrada_nota2)
+        else:
+            nova_nota2 = float(aluno[4])
+
+    except ValueError:
+        print("\nErro: digite apenas números nas notas.")
+        input("\nPressione ENTER para continuar...")
+        return
+
+    if not (0 <= nova_nota1 <= 10 and 0 <= nova_nota2 <= 10):
+        print("\nErro: as notas devem estar entre 0 e 10.")
+        input("\nPressione ENTER para continuar...")
+        return
+
+    novo_status = calcular_status(
+        nova_nota1,
+        nova_nota2
+    )
+
+    linha()
+    print("\nNOVOS DADOS")
+    linha()
+
+    print("Matrícula : {}".format(matricula))
+    print("Nome      : {}".format(novo_nome))
+    print("Nota 1    : {}".format(nova_nota1))
+    print("Nota 2    : {}".format(nova_nota2))
+    print("Status    : {}".format(novo_status))
+
+    linha()
+
+    confirmacao = input(
+        "\nConfirmar alteração? [S/N]: "
+    ).strip().upper()
+
+    if confirmacao == "S":
+
+        aluno_atualizado = atualizar_aluno(
+            matricula,
+            novo_nome,
+            nova_nota1,
+            nova_nota2,
+            novo_status
+        )
+
+        if aluno_atualizado:
+            print("\nAluno atualizado com sucesso.")
+        else:
+            print("\nNenhuma alteração foi realizada.")
+
+    elif confirmacao == "N":
+        print("\nAlteração cancelada.")
+
+    else:
+        print("\nOpção inválida. Alteração cancelada.")
+
+    input("\nPressione ENTER para continuar...")
+
+    limpar_tela()
+# =========================================
+# EXCLUIR ALUNO
+# =========================================
+
+def excluir_aluno_cli():
+
+    limpar_tela()
+    cabecalho("EXCLUIR ALUNO")
+
+    print("Para excluir um aluno, será necessário informar a matrícula.")
+    print("Caso não saiba a matrícula, utilize primeiro a busca por nome.")
+
+    linha()
+
+    matricula = input("Digite a matrícula do aluno: ").strip()
+
+    if not matricula:
+        print("\nErro: a matrícula não pode ficar vazia.")
+        input("\nPressione ENTER para continuar...")
+        return
+
+    aluno = buscar_aluno_por_matricula(matricula)
+
+    if aluno is None:
+        print("\nNenhum aluno encontrado com essa matrícula.")
+        input("\nPressione ENTER para continuar...")
+        return
+
+    print("\nAluno encontrado:")
+    linha()
+    print(f"Matrícula : {aluno[1]}")
+    print(f"Nome      : {aluno[2]}")
+    print(f"Nota 1    : {aluno[3]}")
+    print(f"Nota 2    : {aluno[4]}")
+    print(f"Status    : {aluno[5]}")
+    linha()
+
+    confirmacao = input(
+        "\nTem certeza que deseja excluir este aluno? [S/N]: "
+    ).strip().upper()
+
+    if confirmacao == "S":
+
+        aluno_excluido = excluir_aluno(matricula)
+
+        if aluno_excluido:
+            print("\nAluno excluído com sucesso.")
+        else:
+            print("\nErro: não foi possível excluir o aluno.")
+
+    elif confirmacao == "N":
+        print("\nExclusão cancelada.")
+
+    else:
+        print("\nOpção inválida. Exclusão cancelada.")
+
+    input("\nPressione ENTER para continuar...")
+
+    limpar_tela()
+
+
+# =========================================
 # MENU PRINCIPAL
 # =========================================
 
@@ -203,9 +388,11 @@ def menu_principal():
 
         print("[1] Cadastrar aluno")
         print("[2] Listar alunos")
-        print("[3] Buscar aluno por nome")
-        print("[4] Buscar aluno por matrícula")
-        print("[5] Sair")
+        print("[3] Buscar aluno por Nome")
+        print("[4] Buscar aluno por Matrícula")
+        print("[5] Editar aluno")
+        print("[6] Excluir aluno")
+        print("[0] Sair")
 
         linha()
 
@@ -224,6 +411,12 @@ def menu_principal():
             buscar_por_matricula()
 
         elif opcao == "5":
+            editar_aluno()
+
+        elif opcao == "6":
+            excluir_aluno_cli()
+
+        elif opcao == "0":
             limpar_tela()
             print("Encerrando sistema...")
             break
