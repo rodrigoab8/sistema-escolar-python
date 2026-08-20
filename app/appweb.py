@@ -1,131 +1,172 @@
-from appweb import component, html, use_state, run
+from flask import Flask, render_template, request, redirect
 
-@component
-def App():
-    # Estados para o formulário
-    nome, set_nome = use_state("")
-    nota1, set_nota1 = use_state("")
-    nota2, set_nota2 = use_state("")
-    
-    # Estado para a lista de alunos (nosso banco de dados)
-    banco_dados_alunos, set_banco_dados_alunos = use_state([])
-    erro, set_erro = use_state("") # Começa vazio
-    def adicionar_aluno(event):
-        # Validação simples
-        try:
-            n1 = float(nota1)
-            n2 = float(nota2)
-            if not (0 <= n1 <= 10 and 0 <= n2 <= 10):
-                set_erro("As notas devem estar entre 0 e 10!")
-                return
-        except ValueError:
-            set_erro("Por favor, digite apenas números!")
-            return
+from aluno_repository import (
+    buscar_todos_alunos,
+    inserir_aluno,
+    buscar_aluno_por_nome,
+    buscar_aluno_por_matricula,
+    atualizar_aluno,
+    excluir_aluno,
+    contar_alunos
+)
 
-        media = (n1 + n2) / 2
-        
-        # Lógica de situação
-        if media >= 7.0: situacao = "APROVADO"
-        elif media >= 5.0: situacao = "RECUPERAÇÃO"
-        else: situacao = "REPROVADO"
+from services import calcular_status
 
-        novo_aluno = {
-            "nome": nome,
-            "media": round(media, 1),
-            "situacao": situacao
-        }
 
-        # Atualiza a lista (spread operator style)
-        set_banco_dados_alunos([*banco_dados_alunos, novo_aluno])
-        
-        # Limpa os campos
-        set_nome("")
-        set_nota1("")
-        set_nota2("")
+app = Flask(__name__)
 
-    # Estilização com Bootstrap via CDN
-    return html.div(
-        html.head(
-            html.link({
-                "rel": "stylesheet",
-                "href": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            })
-        ),
-        html.div({"className": "container mt-5"},
-        html.h1({"className": "text-center mb-4"}, "Sistema Escolar"),
 
-    # SÓ EXIBE SE O ESTADO 'ERRO' NÃO ESTIVER VAZIO
-        html.div({"className": f"alert alert-danger {'d-none' if not erro else ''}"}, 
-        erro
-    ),
-            
-            # Formulário Responsivo
-            html.div({"className": "card p-4 shadow-sm mb-5"},
-                html.div({"className": "row g-3"},
-                    html.div({"className": "col-md-4"},
-                        html.input({
-                            "className": "form-control",
-                            "placeholder": "Nome do Aluno",
-                            "value": nome,
-                            "on_change": lambda event: set_nome(event["target"]["value"])
-                        })
-                    ),
-                    html.div({"className": "col-md-3"},
-                        html.input({
-                            "type": "number",
-                            "className": "form-control",
-                            "placeholder": "Nota 1",
-                            "value": nota1,
-                            "on_change": lambda event: set_nota1(event["target"]["value"])
-                        })
-                    ),
-                    html.div({"className": "col-md-3"},
-                        html.input({
-                            "type": "number",
-                            "className": "form-control",
-                            "placeholder": "Nota 2",
-                            "value": nota2,
-                            "on_change": lambda event: set_nota2(event["target"]["value"])
-                        })
-                    ),
-                    html.div({"className": "col-md-2 d-grid"},
-                        html.button({
-                            "className": "btn btn-primary",
-                            "on_click": adicionar_aluno
-                        }, "Cadastrar")
-                    )
-                )
-            ),
+# =========================================
+# PÁGINA INICIAL
+# =========================================
 
-            # Tabela de Resultados
-            html.div({"className": "table-responsive"},
-                html.table({"className": "table table-hover border"},
-                    html.thead({"className": "table-dark"},
-                        html.tr(
-                            html.th("Aluno"),
-                            html.th("Média"),
-                            html.th("Situação")
-                        )
-                    ),
-                    html.tbody(
-                        [html.tr({"key": i},
-                            html.td(aluno["nome"]),
-                            html.td(aluno["media"]),
-                            html.td({
-                                "className": f"fw-bold {'text-success' if aluno['situacao'] == 'APROVADO' else 'text-warning' if aluno['situacao'] == 'RECUPERAÇÃO' else 'text-danger'}"
-                            }, aluno["situacao"])
-                        ) for i, aluno in enumerate(banco_dados_alunos)]
-                    )
-                )
-            ),
-            
-            # Resumo Estatístico (Card debaixo)
-            html.div({"className": "mt-4 p-3 bg-light border rounded"},
-                html.p({"className": "mb-0"}, f"Total de Alunos: {len(banco_dados_alunos)}"),
-                html.p({"className": "mb-0"}, f"Média Geral: {round(sum(a['media'] for a in banco_dados_alunos)/len(banco_dados_alunos), 1) if banco_dados_alunos else 0}")
-            )
-        )
+@app.route("/")
+def inicio():
+
+    alunos = buscar_todos_alunos()
+    total_alunos = contar_alunos()
+
+    return render_template(
+        "index.html",
+        alunos=alunos,
+        total_alunos=total_alunos
     )
 
+
+# =========================================
+# CADASTRAR ALUNO
+# =========================================
+
+@app.route("/cadastrar", methods=["POST"])
+def cadastrar():
+
+    nome = request.form["nome"].strip()
+
+    nota1 = float(request.form["nota1"])
+    nota2 = float(request.form["nota2"])
+
+    status = calcular_status(
+        nota1,
+        nota2
+    )
+
+    inserir_aluno(
+        nome,
+        nota1,
+        nota2,
+        status
+    )
+
+    return redirect("/")
+
+
+# =========================================
+# BUSCAR ALUNO POR NOME
+# =========================================
+
+@app.route("/buscar")
+def buscar():
+
+    nome = request.args.get("nome", "").strip()
+
+    if nome:
+        alunos = buscar_aluno_por_nome(nome)
+    else:
+        alunos = buscar_todos_alunos()
+
+    total_alunos = contar_alunos()
+
+    return render_template(
+        "index.html",
+        alunos=alunos,
+        total_alunos=total_alunos
+    )
+
+
+# =========================================
+# BUSCAR ALUNO POR MATRÍCULA
+# =========================================
+
+@app.route("/buscar-matricula")
+def buscar_matricula():
+
+    matricula = request.args.get("matricula", "").strip()
+
+    if matricula:
+        aluno = buscar_aluno_por_matricula(matricula)
+
+        if aluno:
+            alunos = [aluno]
+        else:
+            alunos = []
+
+    else:
+        alunos = buscar_todos_alunos()
+
+    total_alunos = contar_alunos()
+
+    return render_template(
+        "index.html",
+        alunos=alunos,
+        total_alunos=total_alunos
+    )
+
+
+# =========================================
+# EDITAR ALUNO
+# =========================================
+
+@app.route("/editar/<matricula>", methods=["GET", "POST"])
+def editar(matricula):
+
+    aluno = buscar_aluno_por_matricula(matricula)
+
+    if aluno is None:
+        return redirect("/")
+
+    if request.method == "POST":
+
+        nome = request.form["nome"].strip()
+
+        nota1 = float(request.form["nota1"])
+        nota2 = float(request.form["nota2"])
+
+        status = calcular_status(
+            nota1,
+            nota2
+        )
+
+        atualizar_aluno(
+            matricula,
+            nome,
+            nota1,
+            nota2,
+            status
+        )
+
+        return redirect("/")
+
+    return render_template(
+        "editar.html",
+        aluno=aluno
+    )
+
+
+# =========================================
+# EXCLUIR ALUNO
+# =========================================
+
+@app.route("/excluir/<matricula>", methods=["POST"])
+def excluir(matricula):
+
+    excluir_aluno(matricula)
+
+    return redirect("/")
+
+
+# =========================================
+# INICIAR APLICAÇÃO
+# =========================================
+
 if __name__ == "__main__":
-    run(App)
+    app.run(debug=True)

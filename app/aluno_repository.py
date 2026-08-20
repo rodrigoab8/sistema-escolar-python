@@ -56,6 +56,7 @@ def buscar_todos_alunos():
 
     return alunos
 
+
 def buscar_aluno_por_nome(nome):
     conexao = conectar()
     cursor = conexao.cursor()
@@ -77,6 +78,7 @@ def buscar_aluno_por_nome(nome):
 
     return alunos
 
+
 def buscar_aluno_por_matricula(matricula):
     conexao = conectar()
     cursor = conexao.cursor()
@@ -95,6 +97,7 @@ def buscar_aluno_por_matricula(matricula):
     conexao.close()
 
     return aluno
+
 
 def excluir_aluno(matricula):
     conexao = conectar()
@@ -115,6 +118,7 @@ def excluir_aluno(matricula):
     conexao.close()
 
     return aluno_excluido
+
 
 def atualizar_aluno(matricula, nome, nota1, nota2, status):
     conexao = conectar()
@@ -141,3 +145,26 @@ def atualizar_aluno(matricula, nome, nota1, nota2, status):
     conexao.close()
 
     return aluno_atualizado
+
+
+# =========================================
+# CONTAR ALUNOS CADASTRADOS
+# =========================================
+
+def contar_alunos():
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    sql = """
+    SELECT COUNT(*)
+    FROM alunos
+    """
+
+    cursor.execute(sql)
+
+    resultado = cursor.fetchone()
+
+    cursor.close()
+    conexao.close()
+
+    return resultado[0]

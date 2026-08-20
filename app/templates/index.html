@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Escolar</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='styles.css') }}"
+    >
+</head>
+
+<body>
+
+    <h1>Sistema Escolar</h1>
+
+    <!-- =========================================
+         RESUMO DE ALUNOS
+    ========================================== -->
+
+    <div class="resumo-alunos">
+        Alunos cadastrados:
+        <strong>{{ total_alunos }}</strong>
+    </div>
+
+
+    <!-- =========================================
+         ÁREA SUPERIOR
+         Três cards lado a lado
+    ========================================== -->
+
+    <div class="painel">
+
+        <!-- CADASTRAR ALUNO -->
+
+        <section class="card">
+
+            <h2>Cadastrar aluno</h2>
+
+            <form method="POST" action="/cadastrar">
+
+                <label>Nome:</label>
+
+                <input
+                    type="text"
+                    name="nome"
+                    placeholder="Nome do aluno"
+                    required
+                >
+
+                <label>Nota 1:</label>
+
+                <input
+                    type="number"
+                    name="nota1"
+                    step="0.01"
+                    min="0"
+                    max="10"
+                    required
+                >
+
+                <label>Nota 2:</label>
+
+                <input
+                    type="number"
+                    name="nota2"
+                    step="0.01"
+                    min="0"
+                    max="10"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    class="btn-principal"
+                >
+                    Cadastrar
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- BUSCAR ALUNO POR NOME -->
+
+        <section class="card">
+
+            <h2>Buscar aluno</h2>
+
+            <form method="GET" action="/buscar">
+
+                <label>Nome:</label>
+
+                <input
+                    type="text"
+                    name="nome"
+                    placeholder="Digite o nome do aluno"
+                >
+
+                <button
+                    type="submit"
+                    class="btn-buscar"
+                >
+                    Buscar
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- BUSCAR ALUNO POR MATRÍCULA -->
+
+        <section class="card">
+
+            <h2>Buscar por matrícula</h2>
+
+            <form method="GET" action="/buscar-matricula">
+
+                <label>Matrícula:</label>
+
+                <input
+                    type="text"
+                    name="matricula"
+                    placeholder="Ex: ALU000002"
+                >
+
+                <button
+                    type="submit"
+                    class="btn-buscar"
+                >
+                    Buscar
+                </button>
+
+            </form>
+
+            <a
+                href="/"
+                class="mostrar-todos"
+            >
+                Mostrar todos os alunos
+            </a>
+
+        </section>
+
+    </div>
+
+
+    <!-- =========================================
+         TABELA DE ALUNOS
+    ========================================== -->
+
+    <section class="area-tabela">
+
+        <h2>Alunos cadastrados</h2>
+
+        {% if alunos %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Matrícula</th>
+                        <th>Nome</th>
+                        <th>Nota 1</th>
+                        <th>Nota 2</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for aluno in alunos %}
+
+                        <tr>
+
+                            <td>{{ aluno[1] }}</td>
+                            <td>{{ aluno[2] }}</td>
+                            <td>{{ aluno[3] }}</td>
+                            <td>{{ aluno[4] }}</td>
+                            <td>{{ aluno[5] }}</td>
+
+                            <td class="acoes">
+
+                                <a
+                                    href="/editar/{{ aluno[1] }}"
+                                    class="btn-editar"
+                                >
+                                    Editar
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="/excluir/{{ aluno[1] }}"
+                                    onsubmit="return confirm('Realmente deseja excluir este aluno?');"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="btn-excluir"
+                                    >
+                                        Excluir
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        {% else %}
+
+            <p>Nenhum aluno encontrado.</p>
+
+        {% endif %}
+
+    </section>
+
+</body>
+
+</html>

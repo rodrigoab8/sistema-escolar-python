@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Aluno</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='styles.css') }}"
+    >
+</head>
+
+<body>
+
+    <h1>Sistema Escolar</h1>
+
+    <!-- =========================================
+         ÁREA DE EDIÇÃO
+    ========================================== -->
+
+    <div class="pagina-editar">
+
+        <section class="card-editar">
+
+            <h2>Editar aluno</h2>
+
+            <p class="matricula-aluno">
+                Matrícula:
+                <strong>{{ aluno[1] }}</strong>
+            </p>
+
+            <form
+                method="POST"
+                action="/editar/{{ aluno[1] }}"
+            >
+
+                <!-- NOME -->
+
+                <label>Nome:</label>
+
+                <input
+                    type="text"
+                    name="nome"
+                    value="{{ aluno[2] }}"
+                    required
+                >
+
+
+                <!-- NOTA 1 -->
+
+                <label>Nota 1:</label>
+
+                <input
+                    type="number"
+                    name="nota1"
+                    value="{{ aluno[3] }}"
+                    step="0.01"
+                    min="0"
+                    max="10"
+                    required
+                >
+
+
+                <!-- NOTA 2 -->
+
+                <label>Nota 2:</label>
+
+                <input
+                    type="number"
+                    name="nota2"
+                    value="{{ aluno[4] }}"
+                    step="0.01"
+                    min="0"
+                    max="10"
+                    required
+                >
+
+
+                <!-- STATUS ATUAL -->
+
+                <div class="status-atual">
+
+                    <span>Status atual:</span>
+
+                    <strong>
+                        {{ aluno[5] }}
+                    </strong>
+
+                </div>
+
+
+                <!-- BOTÕES -->
+
+                <div class="acoes-edicao">
+
+                    <button
+                        type="submit"
+                        class="btn-salvar"
+                    >
+                        Salvar alterações
+                    </button>
+
+                    <a
+                        href="/"
+                        class="btn-cancelar"
+                    >
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</body>
+
+</html>

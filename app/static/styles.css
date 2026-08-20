@@ -1,0 +1,502 @@
+/* ==================================================
+   CONFIGURAÇÃO GLOBAL
+================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* ==================================================
+   CORPO DA PÁGINA
+================================================== */
+
+body {
+    margin: 0;
+    padding: 30px;
+
+    background-color: #f4f6f8;
+
+    font-family: Arial, sans-serif;
+    color: #333333;
+}
+
+
+/* ==================================================
+   TÍTULO PRINCIPAL
+================================================== */
+
+h1 {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+
+/* ==================================================
+   PAINEL SUPERIOR
+   Coloca os três cards lado a lado
+================================================== */
+
+.painel {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 35px;
+}
+
+
+/* ==================================================
+   CARDS
+   Cada funcionalidade fica dentro de um bloco
+================================================== */
+
+.card {
+    background-color: white;
+
+    padding: 22px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==================================================
+   TÍTULOS DOS CARDS
+================================================== */
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+
+/* ==================================================
+   FORMULÁRIOS DOS CARDS
+================================================== */
+
+.card form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* ==================================================
+   LABELS
+================================================== */
+
+label {
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   CAMPOS DE ENTRADA
+================================================== */
+
+input {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #cccccc;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    margin-bottom: 8px;
+}
+
+
+/* ==================================================
+   BOTÕES GERAIS
+================================================== */
+
+button {
+    padding: 10px 16px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   BOTÃO CADASTRAR
+================================================== */
+
+.btn-principal {
+    background-color: #198754;
+
+    color: white;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   BOTÕES DE BUSCA
+================================================== */
+
+.btn-buscar {
+    background-color: #0d6efd;
+
+    color: white;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   LINK MOSTRAR TODOS
+================================================== */
+
+.mostrar-todos {
+    display: inline-block;
+
+    margin-top: 15px;
+
+    color: #0d6efd;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   ÁREA DA TABELA
+================================================== */
+
+.area-tabela {
+    background-color: white;
+
+    padding: 22px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==================================================
+   TÍTULO DA TABELA
+================================================== */
+
+.area-tabela h2 {
+    margin-top: 0;
+}
+
+
+/* ==================================================
+   TABELA
+================================================== */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+
+/* ==================================================
+   CÉLULAS
+================================================== */
+
+th,
+td {
+    padding: 12px;
+
+    text-align: left;
+
+    border-bottom: 1px solid #dddddd;
+}
+
+
+/* ==================================================
+   CABEÇALHO DA TABELA
+================================================== */
+
+th {
+    background-color: #222222;
+
+    color: white;
+}
+
+
+/* ==================================================
+   EFEITO AO PASSAR O MOUSE NA LINHA
+================================================== */
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* ==================================================
+   COLUNA DE AÇÕES
+================================================== */
+
+.acoes {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+/* ==================================================
+   REMOVE MARGEM DO FORMULÁRIO DE EXCLUSÃO
+================================================== */
+
+.acoes form {
+    margin: 0;
+}
+
+
+/* ==================================================
+   BOTÃO EDITAR
+================================================== */
+
+.btn-editar {
+    display: inline-block;
+
+    padding: 8px 12px;
+
+    border-radius: 6px;
+
+    background-color: #f0ad4e;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   BOTÃO EXCLUIR
+================================================== */
+
+.btn-excluir {
+    padding: 8px 12px;
+
+    background-color: #d9534f;
+
+    color: white;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   EFEITOS DOS BOTÕES
+================================================== */
+
+button:hover,
+.btn-editar:hover,
+.mostrar-todos:hover {
+    opacity: 0.85;
+}
+
+
+/* ==================================================
+   RESPONSIVIDADE
+   Em telas menores os cards ficam um embaixo do outro
+================================================== */
+
+@media (max-width: 900px) {
+
+    .painel {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ==================================================
+   PÁGINA DE EDIÇÃO
+   Centraliza o formulário na tela
+================================================== */
+
+.pagina-editar {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+    width: 100%;
+}
+
+
+/* ==================================================
+   CARD DE EDIÇÃO
+   Mantém a mesma identidade dos cards da página inicial
+================================================== */
+
+.card-editar {
+    width: 100%;
+
+    max-width: 600px;
+
+    background-color: white;
+
+    padding: 30px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==================================================
+   TÍTULO DO CARD DE EDIÇÃO
+================================================== */
+
+.card-editar h2 {
+    margin-top: 0;
+
+    margin-bottom: 20px;
+}
+
+
+/* ==================================================
+   MATRÍCULA
+   Destaca a identificação do aluno
+================================================== */
+
+.matricula-aluno {
+    padding: 12px;
+
+    margin-bottom: 20px;
+
+    background-color: #f4f6f8;
+
+    border-radius: 6px;
+}
+
+
+/* ==================================================
+   FORMULÁRIO DE EDIÇÃO
+================================================== */
+
+.card-editar form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* ==================================================
+   STATUS ATUAL
+================================================== */
+
+.status-atual {
+    margin-top: 10px;
+
+    padding: 12px;
+
+    background-color: #f4f6f8;
+
+    border-radius: 6px;
+}
+
+
+/* ==================================================
+   ÁREA DOS BOTÕES
+================================================== */
+
+.acoes-edicao {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    align-items: center;
+}
+
+
+/* ==================================================
+   BOTÃO SALVAR
+================================================== */
+
+.btn-salvar {
+    background-color: #f0ad4e;
+
+    color: white;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   BOTÃO CANCELAR
+================================================== */
+
+.btn-cancelar {
+    display: inline-block;
+
+    padding: 10px 16px;
+
+    border-radius: 6px;
+
+    background-color: #6c757d;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+
+/* ==================================================
+   EFEITO NOS BOTÕES DE EDIÇÃO
+================================================== */
+
+.btn-salvar:hover,
+.btn-cancelar:hover {
+    opacity: 0.85;
+}
+
+/* ==================================================
+   RESUMO DE ALUNOS CADASTRADOS
+================================================== */
+
+.resumo-alunos {
+    width: fit-content;
+
+    margin: 0 auto 30px auto;
+
+    padding: 12px 20px;
+
+    background-color: white;
+
+    border-radius: 8px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    font-size: 18px;
+
+    text-align: center;
+}
+
+.resumo-alunos strong {
+    font-size: 22px;
+}
