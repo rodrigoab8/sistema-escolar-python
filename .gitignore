@@ -8,3 +8,49 @@ venv/
 
 .idea/
 .vscode/
+
+# ============================================================
+# PYTHON
+# ============================================================
+
+# Arquivos temporários gerados pelo Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambiente virtual e variáveis de ambiente
+venv/
+.env
+
+# Configurações locais dos editores
+.idea/
+.vscode/
+
+
+# ============================================================
+# TERRAFORM - INFRAESTRUTURA COMO CÓDIGO
+# ============================================================
+
+# Ignora provedores e módulos baixados pelo terraform init.
+**/.terraform/*
+
+# Ignora arquivos de estado da infraestrutura.
+# O estado pode conter informações sensíveis.
+*.tfstate
+*.tfstate.*
+
+# Ignora arquivos locais de variáveis.
+# Podem conter credenciais e outras configurações privadas.
+*.tfvars
+*.tfvars.json
+
+# Ignora logs gerados quando o Terraform apresenta falhas.
+crash.log
+crash.*.log
+
+# Ignora arquivos que sobrescrevem configurações Terraform.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
